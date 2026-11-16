@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#090d18" />
+  <meta name="description" content="Battle Arena India - Free Fire community tournament platform." />
+  <title>Battle Arena India</title>
+  <style>
+    :root {
+      --bg:#090d18; --panel:#111827; --panel2:#172033; --line:#263247;
+      --text:#f4f7fb; --muted:#9aa8bd; --orange:#ff8b35; --orange2:#ffb15e;
+      --green:#35d39a; --red:#ff667a; --blue:#6da7ff;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at 85% 0%,#20223b 0,#090d18 38%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .app{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:88px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 12px;position:sticky;top:0;background:rgba(9,13,24,.9);backdrop-filter:blur(14px);z-index:5;border-bottom:1px solid rgba(255,255,255,.04)}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#ffb15e,#f15b27);display:grid;place-items:center;color:#16121a;font-size:22px;font-weight:1000;box-shadow:0 8px 24px #ff812533}
+    .brand-name{font-weight:900;letter-spacing:.4px;font-size:15px}
+    .brand-sub{font-size:10px;color:var(--muted);letter-spacing:1.4px;margin-top:2px}
+    .avatar{width:38px;height:38px;border-radius:50%;background:#25334a;border:1px solid #3a4a63;display:grid;place-items:center;font-weight:800;color:#ffbd75}
+    .content{padding:18px}
+    .eyebrow{color:var(--orange2);font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase}
+    h1{font-size:27px;line-height:1.12;margin:8px 0 8px;letter-spacing:-.7px}
+    h2{font-size:18px;margin:0 0 12px}
+    p{color:var(--muted);line-height:1.55}
+    .hero{position:relative;overflow:hidden;padding:22px;border-radius:24px;background:linear-gradient(125deg,#252039,#161d31 58%,#3a241d);border:1px solid #4b3a43;min-height:190px}
+    .hero:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;top:5px;background:radial-gradient(circle,#ff9b4a55,transparent 68%)}
+    .hero p{max-width:270px;font-size:13px;margin:0 0 18px}
+    .hero-art{position:absolute;right:14px;bottom:12px;font-size:75px;filter:drop-shadow(0 12px 18px #0008);opacity:.95}
+    .primary{border:0;border-radius:13px;padding:13px 17px;background:linear-gradient(135deg,var(--orange2),var(--orange));color:#1a1520;font-weight:900;box-shadow:0 8px 22px #ff8b3530}
+    .secondary{border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:#ffffff08;color:var(--text);font-weight:700}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px}
+    .section-head h2{margin:0}
+    .link-btn{border:0;background:none;color:var(--orange2);font-weight:800;font-size:12px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}
+    .stat{padding:13px 10px;background:#ffffff08;border:1px solid var(--line);border-radius:15px}
+    .stat strong{display:block;font-size:18px}
+    .stat span{font-size:10px;color:var(--muted)}
+    .formats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .format{padding:15px 8px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:17px}
+    .format .emoji{font-size:25px}
+    .format strong{display:block;margin:7px 0 3px;font-size:13px}
+    .format small{color:var(--muted);font-size:10px}
+    .tournament{padding:15px;background:linear-gradient(145deg,#151e30,#101725);border:1px solid var(--line);border-radius:18px;margin-bottom:10px}
+    .t-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:20px;background:#ff9c3a18;color:#ffbd75;font-size:10px;font-weight:800}
+    .pill.green{background:#35d39a18;color:#65e7b7}
+    .tournament h3{font-size:15px;margin:10px 0 5px}
+    .tournament p{font-size:11px;margin:0 0 12px}
+    .t-meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;border-top:1px solid var(--line);padding-top:10px}
+    .notice{padding:12px 13px;border-radius:14px;background:#ffb15e12;border:1px solid #ffb15e35;color:#ffd19e;font-size:11px;line-height:1.5;margin-top:14px}
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:rgba(12,17,29,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line);z-index:10}
+    .nav-btn{border:0;background:none;color:#7f8da4;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:5px}
+    .nav-btn .ico{font-size:19px}
+    .nav-btn.active{color:var(--orange2)}
+    .screen{display:none}.screen.active{display:block}
+    .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}
+    .auth-card{width:100%;max-width:420px;padding:25px;background:linear-gradient(155deg,#172238,#101725);border:1px solid var(--line);border-radius:25px;box-shadow:0 25px 70px #0007}
+    .auth-logo{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#ffb15e,#f15b27);font-size:32px;margin-bottom:18px}
+    .auth-card h1{font-size:25px}
+    .field-label{display:block;color:#c6d0df;font-size:12px;font-weight:700;margin:17px 0 7px}
+    .field{width:100%;padding:14px 13px;border-radius:12px;background:#0b1220;border:1px solid #344258;color:white;outline:none}
+    .field:focus{border-color:var(--orange)}
+    .field-row{display:flex;gap:8px}
+    .country{width:76px;flex-shrink:0;text-align:center}
+    .full{width:100%;margin-top:15px}
+    .helper{font-size:11px;color:var(--muted);margin-top:12px}
+    .error{color:#ff8292;font-size:12px;margin-top:10px;min-height:18px}
+    .success{color:#67e5b6;font-size:12px;margin-top:10px;min-height:18px}
+    #recaptcha-container{margin-top:12px;overflow:hidden}
+    .profile-card{padding:18px;border:1px solid var(--line);background:var(--panel);border-radius:18px}
+    .profile-row{display:flex;align-items:center;gap:12px}
+    .big-avatar{width:54px;height:54px;border-radius:18px;background:#273752;display:grid;place-items:center;font-size:22px}
+    .profile-row p{margin:3px 0 0;font-size:11px}
+    .list-row{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--line);font-size:13px}
+    .empty{padding:25px 15px;text-align:center;border:1px dashed #3a4960;border-radius:16px;color:var(--muted);font-size:12px}
+    .hidden{display:none!important}
+    @media(min-width:520px){body{padding:0 0 20px}.app{border-left:1px solid #182235;border-right:1px solid #182235}}
+  </style>
+</head>
+<body>
+  <div id="authScreen" class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">🏆</div>
+      <div class="eyebrow">India's gaming arena</div>
+      <h1>Enter the <span style="color:#ffad59">Battle Arena</span></h1>
+      <p>Sign in with your phone number to join community tournaments.</p>
+      <div id="phoneStep">
+        <label class="field-label" for="phoneInput">Mobile number</label>
+        <div class="field-row">
+          <input class="field country" value="+91" disabled aria-label="Country code" />
+          <input class="field" id="phoneInput" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" />
+        </div>
+        <div id="recaptcha-container"></div>
+        <button id="sendOtpBtn" class="primary full">Send OTP</button>
+        <div class="helper">By continuing, you agree to receive an SMS verification code. Standard SMS charges may apply.</div>
+      </div>
+      <div id="otpStep" class="hidden">
+        <label class="field-label" for="otpInput">6-digit verification code</label>
+        <input class="field" id="otpInput" type="text" inputmode="numeric" maxlength="6" placeholder="Enter OTP" />
+        <button id="verifyOtpBtn" class="primary full">Verify & Continue</button>
+        <button id="backPhoneBtn" class="secondary full">Change phone number</button>
+      </div>
+      <div id="authMessage" class="error" role="status"></div>
+      <div class="notice">Demo platform only. No paid entry, cash prize, wallet or withdrawal is enabled in this build.</div>
+    </div>
+  </div>
+
+  <div id="mainApp" class="app hidden">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">🏆</div>
+        <div><div class="brand-name">BATTLE ARENA</div><div class="brand-sub">INDIA • COMMUNITY</div></div>
+      </div>
+      <div class="avatar" id="topAvatar">P</div>
+    </header>
+
+    <main class="content">
+      <section id="homeScreen" class="screen active">
+        <div class="hero">
+          <div class="eyebrow">Ready for the challenge?</div>
+          <h1>Play Smart.<br><span style="color:#ffb15e">Rise to Glory.</span></h1>
+          <p>Find your next Free Fire community match and compete with players across India.</p>
+          <button class="primary" onclick="showScreen('tournaments')">Explore Tournaments →</button>
+          <div class="hero-art">🎮</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>03</strong><span>GAME MODES</span></div>
+          <div class="stat"><strong>24/7</strong><span>COMMUNITY</span></div>
+          <div class="stat"><strong>FREE</strong><span>DEMO ACCESS</span></div>
+        </div>
+        <div class="section-head"><h2>Choose your format</h2><button class="link-btn" onclick="showScreen('tournaments')">View all</button></div>
+        <div class="formats">
+          <div class="format"><div class="emoji">🎯</div><strong>SOLO</strong><small>1 Player</small></div>
+          <div class="format"><div class="emoji">⚡</div><strong>DUO</strong><small>2 Players</small></div>
+          <div class="format"><div class="emoji">🛡️</div><strong>SQUAD</strong><small>4 Players</small></div>
+        </div>
+        <div class="section-head"><h2>Featured tournaments</h2><button class="link-btn" onclick="showScreen('tournaments')">See more</button></div>
+        <div id="featuredList"></div>
+        <div class="notice">All tournaments in Phase 1 are demo listings. Registration, entry fees and cash prizes are not active.</div>
+      </section>
+
+      <section id="tournamentsScreen" class="screen">
+        <div class="eyebrow">Compete with the community</div>
+        <h1>Tournaments</h1>
+        <p>Choose Solo, Duo or Squad. Demo events are shown for interface testing.</p>
+        <div class="formats" style="margin:18px 0">
+          <div class="format"><div class="emoji">🎯</div><strong>SOLO</strong><small>1 Player</small></div>
+          <div class="format"><div class="emoji">⚡</div><strong>DUO</strong><small>2 Players</small></div>
+          <div class="format"><div class="emoji">🛡️</div><strong>SQUAD</strong><small>4 Players</small></div>
+        </div>
+        <div id="tournamentList"></div>
+      </section>
+
+      <section id="leaderboardScreen" class="screen">
+        <div class="eyebrow">Top community players</div>
+        <h1>Leaderboard</h1>
+        <p>Rankings will appear here after tournament results are introduced in a later phase.</p>
+        <div class="empty">🏅<br><br>No verified results yet.<br>Leaderboard coming in Phase 3.</div>
+      </section>
+
+      <section id="profileScreen" class="screen">
+        <div class="eyebrow">Your player account</div>
+        <h1>My Profile</h1>
+        <div class="profile-card">
+          <div class="profile-row">
+            <div class="big-avatar">👤</div>
+            <div><strong id="profilePhone">Player</strong><p id="profileUid">User ID</p></div>
+          </div>
+        </div>
+        <div class="section-head"><h2>Account</h2></div>
+        <div class="list-row"><span>Account status</span><span class="pill green">Verified phone</span></div>
+        <div class="list-row"><span>Game mode</span><span>Solo / Duo / Squad</span></div>
+        <div class="list-row"><span>App version</span><span>Phase 1.0</span></div>
+        <div class="notice">Never share your OTP with anyone. Battle Arena support will never ask for your verification code.</div>
+        <button id="logoutBtn" class="secondary full">Sign Out</button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="home"><span class="ico">⌂</span>Home</button>
+      <button class="nav-btn" data-screen="tournaments"><span class="ico">🏆</span>Tournaments</button>
+      <button class="nav-btn" data-screen="leaderboard"><span class="ico">🥇</span>Ranks</button>
+      <button class="nav-btn" data-screen="profile"><span class="ico">◉</span>Profile</button>
+    </nav>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getAuth, RecaptchaVerifier, signInWithPhoneNumber,
+      onAuthStateChanged, signOut
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getFirestore, doc, setDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    // 1) Replace these values with your Firebase project's Web App config.
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const authScreen = $("authScreen");
+    const mainApp = $("mainApp");
+    const authMessage = $("authMessage");
+    let auth = null, db = null, confirmationResult = null, recaptchaVerifier = null;
+
+    const demoTournaments = [
+      {id:"demo-solo-01",name:"Solo Clash • Practice Room",mode:"SOLO",players:"1 Player",date:"Demo schedule",status:"OPEN"},
+      {id:"demo-duo-01",name:"Duo Rush • Practice Room",mode:"DUO",players:"2 Players",date:"Demo schedule",status:"OPEN"},
+      {id:"demo-squad-01",name:"Squad Battle • Practice Room",mode:"SQUAD",players:"4 Players",date:"Demo schedule",status:"OPEN"}
+    ];
+
+    function setAuthMessage(message, type="error") {
+      authMessage.textContent = message;
+      authMessage.className = type;
+    }
+
+    function showSignedIn(user) {
+      authScreen.classList.add("hidden");
+      mainApp.classList.remove("hidden");
+      $("profilePhone").textContent = user.phoneNumber || "Verified player";
+      $("profileUid").textContent = "UID: " + user.uid.slice(0, 12) + "…";
+      $("topAvatar").textContent = (user.phoneNumber || "P").slice(-1);
+    }
+
+    function renderTournaments() {
+      const html = demoTournaments.map(t => `
+        <article class="tournament">
+          <div class="t-top"><span class="pill">${t.mode}</span><span class="pill green">${t.status}</span></div>
+          <h3>${t.name}</h3>
+          <p>${t.players} • ${t.date}</p>
+          <div class="t-meta"><span>Entry: FREE DEMO</span><span>Prize: Not enabled</span></div>
+          <button class="secondary full" disabled style="opacity:.65;cursor:not-allowed">Registration coming in Phase 2</button>
+        </article>`).join("");
+      $("tournamentList").innerHTML = html;
+      $("featuredList").innerHTML = demoTournaments.slice(0,2).map(t => `
+        <article class="tournament">
+          <div class="t-top"><span class="pill">${t.mode}</span><span class="pill green">DEMO</span></div>
+          <h3>${t.name}</h3><p>${t.players} • ${t.date}</p>
+        </article>`).join("");
+    }
+
+    window.showScreen = function(name) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const target = $(name + "Screen");
+      if (target) target.classList.add("active");
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.screen === name));
+      window.scrollTo({top:0,behavior:"smooth"});
+    };
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => window.showScreen(btn.dataset.screen));
+    });
+
+    function initFirebase() {
+      if (firebaseConfig.apiKey === "YOUR_API_KEY" || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
+        setAuthMessage("Firebase config is missing. Add your Firebase Web App config in index.html.", "error");
+        $("sendOtpBtn").disabled = true;
+        $("sendOtpBtn").style.opacity = ".55";
+        return false;
+      }
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      auth.languageCode = "en";
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          showSignedIn(user);
+          try {
+            await setDoc(doc(db, "users", user.uid), {
+              uid: user.uid,
+              phoneNumber: user.phoneNumber || "",
+              lastLoginAt: serverTimestamp(),
+              platform: "web"
+            }, {merge:true});
+          } catch (e) {
+            console.error("Profile save failed:", e);
+          }
+        } else {
+          mainApp.classList.add("hidden");
+          authScreen.classList.remove("hidden");
+        }
+      });
+      return true;
+    }
+
+    $("sendOtpBtn").addEventListener("click", async () => {
+      if (!auth) return;
+      const digits = $("phoneInput").value.replace(/\D/g,"");
+      if (!/^[6-9]\d{9}$/.test(digits)) {
+        setAuthMessage("Enter a valid 10-digit Indian mobile number.");
+        return;
+      }
+      $("sendOtpBtn").disabled = true;
+      $("sendOtpBtn").textContent = "Sending...";
+      setAuthMessage("Preparing secure verification…", "success");
+      try {
+        if (recaptchaVerifier) {
+          try { await recaptchaVerifier.clear(); } catch (_) {}
+        }
+        recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {size:"normal"});
+        await recaptchaVerifier.render();
+        confirmationResult = await signInWithPhoneNumber(auth, "+91" + digits, recaptchaVerifier);
+        $("phoneStep").classList.add("hidden");
+        $("otpStep").classList.remove("hidden");
+        setAuthMessage("OTP sent. Check your SMS messages.", "success");
+      } catch (error) {
+        console.error(error);
+        setAuthMessage(error.message || "Could not send OTP. Check Firebase setup and try again.");
+        if (recaptchaVerifier) {
+          try { await recaptchaVerifier.clear(); } catch (_) {}
+          recaptchaVerifier = null;
+        }
+      } finally {
+        $("sendOtpBtn").disabled = false;
+        $("sendOtpBtn").textContent = "Send OTP";
+      }
+    });
+
+    $("verifyOtpBtn").addEventListener("click", async () => {
+      const code = $("otpInput").value.trim();
+      if (!confirmationResult) { setAuthMessage("Please request an OTP first."); return; }
+      if (!/^\d{6}$/.test(code)) { setAuthMessage("Enter the 6-digit OTP."); return; }
+      $("verifyOtpBtn").disabled = true;
+      $("verifyOtpBtn").textContent = "Verifying...";
+      try {
+        await confirmationResult.confirm(code);
+        setAuthMessage("Phone verified successfully.", "success");
+      } catch (error) {
+        console.error(error);
+        setAuthMessage(error.message || "Incorrect or expired OTP. Try again.");
+      } finally {
+        $("verifyOtpBtn").disabled = false;
+        $("verifyOtpBtn").textContent = "Verify & Continue";
+      }
+    });
+
+    $("backPhoneBtn").addEventListener("click", async () => {
+      $("otpStep").classList.add("hidden");
+      $("phoneStep").classList.remove("hidden");
+      $("otpInput").value = "";
+      confirmationResult = null;
+      if (recaptchaVerifier) {
+        try { await recaptchaVerifier.clear(); } catch (_) {}
+        recaptchaVerifier = null;
+      }
+      setAuthMessage("");
+    });
+
+    $("logoutBtn").addEventListener("click", async () => {
+      if (auth) await signOut(auth);
+    });
+
+    renderTournaments();
+    initFirebase();
+  </script>
+</body>
+</html>
